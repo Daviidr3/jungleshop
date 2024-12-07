@@ -40,7 +40,7 @@ body {
 }
 
 .admin-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 40px auto;
   background-color: white;
   padding: 20px;
@@ -190,3 +190,66 @@ a.edit-btn:hover {
   bottom: 0;
   width: 100%;
 }
+    .admin-container {
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 1.2em;
+        overflow-x: auto; /* Allow horizontal scrolling for wider tables */
+    }
+
+    .table-container {
+        max-width: 100%; /* Ensure the table stays within the admin container */
+        overflow-x: auto; /* Add horizontal scroll if needed */
+    }
+
+    table thead th {
+        padding: 15px;
+        background-color: #f4f4f4;
+        text-align: left;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    table tbody td {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        vertical-align: middle; /* Align content in the middle of the cells */
+    }
+
+    table img {
+        width: 100px;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .filter-section {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .filter-section input,
+    .filter-section button {
+        padding: 10px;
+        font-size: 1em;
+        margin: 5px;
+    }
+
+    .filter-section .add-product-btn {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .filter-section .add-product-btn:hover {
+        background-color: #45a049;
+    }
