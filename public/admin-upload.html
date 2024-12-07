@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Bulk Upload</title>
+    <link rel="stylesheet" href="styles/admin.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="admin-logo">
+        <a href="admin-products.html">
+          <img src="images/logo.png" alt="JungleShop Admin Logo" />
+        </a>
+      </div>
+      <nav class="admin-nav">
+        <ul>
+          <li><a href="admin-upload.html">Bulk Upload</a></li>
+          <li><a href="admin-products.html">Product Listing</a></li>
+          <li><a href="signout.html">Sign Out</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="admin-container">
+      <form action="/admin/upload" method="post" enctype="multipart/form-data">
+        <label for="file-upload">Upload Product File (JSON):</label>
+        <input
+          type="file"
+          id="file-upload"
+          name="file-upload"
+          accept=".json"
+        />
+
+        <p>
+          <strong>Accepted File Format:</strong> JSON
+        </p>
+        <p>
+          <strong>Instructions:</strong> Ensure your file contains all required
+          fields, including product name, price, category_id, description, and
+          image_url.
+        </p>
+
+        <p><strong>Example JSON Format:</strong></p>
+        <pre>
+{
+    "products": [
+        {
+            "name": "Super Water Absorbent Doormat",
+            "price": 19.99,
+            "category_id": 1,
+            "description": "Absorbs water instantly to keep your floors dry.",
+            "image_url": "/images/doormat.png"
+        },
+        {
+            "name": "Beautiful Picture Frames",
+            "price": 29.99,
+            "category_id": 2,
+            "description": "Add elegance to your home with these beautiful frames.",
+            "image_url": "/images/frames.png"
+        }
+    ]
+}
+        </pre>
+
+        <button type="submit" class="upload-btn">Upload</button>
+      </form>
+    </main>
+
+    <footer class="admin-footer">
+      <p>&copy; 2024 JungleShop Admin Panel</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #003135;
+  color: white;
+}
+
+.admin-logo img {
+  height: 50px;
+}
+
+.admin-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.admin-nav ul li a {
+  color: #afdde5;
+  font-weight: 600;
+  padding: 10px 15px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.admin-nav ul li a:hover {
+  background-color: #964734;
+  color: white;
+  border-radius: 5px;
+}
+
+.admin-container {
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+label {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+input[type="file"] {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+button.save-btn {
+  margin-top: 30px;
+  padding: 10px 20px;
+  background-color: #0fa4af;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button.save-btn:hover {
+  background-color: #024950;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th,
+table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+table img {
+  border-radius: 5px;
+  width: 50px;
+  height: auto;
+}
+
+.filter-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filter-section input {
+  width: 70%;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.filter-section button {
+  padding: 10px 15px;
+  margin-left: 10px;
+  background-color: #0fa4af;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filter-section button:hover {
+  background-color: #024950;
+}
+
+.add-product-btn {
+  background-color: #964734;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-product-btn:hover {
+  background-color: #783225;
+}
+
+button.edit-btn,
+button.delete-btn,
+button.archive-btn {
+  background-color: #0fa4af;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+button.edit-btn:hover,
+button.delete-btn:hover,
+button.archive-btn:hover,
+a.edit-btn:hover {
+  background-color: #024950;
+}
+
+a.edit-btn {
+  background-color: #0fa4af;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a.edit-btn:hover {
+  background-color: #024950;
+}
+
+.admin-footer {
+  background-color: #003135;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}

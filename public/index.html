@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JungleShop - Ultimate</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        <a href="index.html"
+          ><img src="images/logo.png" alt="JungleShop Logo"
+        /></a>
+      </div>
+      <nav class="nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Shop All</a></li>
+            <li><a href="categories.html">Categories</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li id="auth-link"><a href="auth.html">Sign In</a></li>
+        </ul>
+    </nav>
+    
+    </header>
+    <section class="splash">
+      <div class="splash-content">
+        <h1>Discover The Top Selling Products</h1>
+        <p>Find the latest trends and top deals in one place!</p>
+        <button class="cta-btn">Start Browsing</button>
+      </div>
+    </section>
+    <section class="search-bar">
+      <input type="text" placeholder="Search for products..." />
+      <button>Search</button>
+    </section>
+    <footer class="footer">
+      <p>&copy; 2024 JungleShop. All rights reserved.</p>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+    const authLink = document.getElementById('auth-link');
+    const user = JSON.parse(localStorage.getItem('user')); // Get user details from local storage
+
+    if (user) {
+        // Update navigation bar to show the user's name and a sign-out link
+        authLink.innerHTML = `
+            <span>Welcome, ${user.name}</span> 
+            <a href="signout.html" id="signout-link">Sign Out</a>
+        `;
+    }
+});
+
+
+    </script>
+  </body>
+</html>

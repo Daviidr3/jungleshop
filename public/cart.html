@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - JungleShop</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="JungleShop Logo"></a>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop All</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li id="auth-link"><a href="auth.html">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="cart-container">
+        <h1>Your Shopping Cart</h1>
+        <div id="cart-items" class="cart-items-container"></div>
+        <div class="cart-total">
+            <p id="subtotal"></p>
+            <p id="tax"></p>
+            <p id="delivery-fee"></p>
+            <p><strong id="total"></strong></p>
+            <button class="checkout-btn" onclick="completePurchase()">Proceed to Checkout</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 JungleShop. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const authLink = document.getElementById('auth-link');
+    const user = JSON.parse(localStorage.getItem('user')); // Get user details from local storage
+
+    if (user) {
+        // Update navigation bar to show the user's name and a sign-out link
+        authLink.innerHTML = `
+            <span>Welcome, ${user.name}</span> 
+            <a href="signout.html" id="signout-link">Sign Out</a>
+        `;
+    }
+});
+
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = JSON.parse(localStorage.getItem('user')); // Get logged-in user details
+
+            if (!user) {
+                alert('Please sign in to view your cart.');
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/cart?user_id=${user.user_id}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch cart items: ${response.statusText}`);
+                }
+                const cartItems = await response.json();
+                const cartContainer = document.getElementById('cart-items');
+
+                let subtotal = 0;
+
+                if (cartItems.length === 0) {
+                    cartContainer.innerHTML = '<p>Your cart is empty. Start shopping!</p>';
+                    return;
+                }
+
+                cartItems.forEach(item => {
+                    subtotal += item.price * item.quantity;
+
+                    const cartItemDiv = document.createElement('div');
+                    cartItemDiv.classList.add('cart-item');
+                    cartItemDiv.innerHTML = `
+                        <img src="${item.image_url}" alt="${item.name}" class="cart-item-image" />
+                        <div class="cart-item-details">
+                            <h2>${item.name}</h2>
+                            <p class="price">$${item.price.toFixed(2)}</p>
+                            <p>Total: $${(item.price * item.quantity).toFixed(2)}</p>
+                            <label for="quantity-${item.cart_product_id}">Quantity:</label>
+                            <input type="number" id="quantity-${item.cart_product_id}" value="${item.quantity}" min="1" class="cart-quantity">
+                            <button class="update-btn" onclick="updateQuantity(${item.cart_product_id})">Update</button>
+                            <button class="remove-btn" onclick="removeItem(${item.cart_product_id})">Remove</button>
+                        </div>
+                    `;
+                    cartContainer.appendChild(cartItemDiv);
+                });
+
+                const tax = subtotal * 0.0675;
+                const deliveryFee = 5.0;
+                const total = subtotal + tax + deliveryFee;
+
+                document.getElementById('subtotal').innerText = `Subtotal: $${subtotal.toFixed(2)}`;
+                document.getElementById('tax').innerText = `Tax (6.75%): $${tax.toFixed(2)}`;
+                document.getElementById('delivery-fee').innerText = `Delivery Fee: $${deliveryFee.toFixed(2)}`;
+                document.getElementById('total').innerText = `Total: $${total.toFixed(2)}`;
+            } catch (err) {
+                console.error('Error fetching cart items:', err);
+                const cartContainer = document.getElementById('cart-items');
+                cartContainer.innerHTML = `<p class="error">Failed to load cart items. Please try again later.</p>`;
+            }
+        });
+
+        // Complete Purchase
+        async function completePurchase() {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!user) {
+                alert('Please sign in to complete your purchase.');
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/cart/checkout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: user.user_id })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to complete purchase: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                alert(`Thank you for your purchase! Your total was $${result.total.toFixed(2)}.`);
+                location.reload(); // Reload the page to clear the cart
+            } catch (err) {
+                console.error('Error completing purchase:', err);
+                alert('Failed to complete purchase. Please try again later.');
+            }
+        }
+
+        // Update the quantity of a specific item in the cart
+        async function updateQuantity(cartProductId) {
+            const quantity = document.getElementById(`quantity-${cartProductId}`).value;
+
+            try {
+                const response = await fetch(`/cart/${cartProductId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity }),
+                });
+                if (!response.ok) throw new Error('Failed to update quantity.');
+                alert('Quantity updated successfully.');
+                location.reload();
+            } catch (err) {
+                console.error('Error updating quantity:', err);
+            }
+        }
+
+        // Remove an item from the cart
+        async function removeItem(cartProductId) {
+            try {
+                const response = await fetch(`/cart/${cartProductId}`, { method: 'DELETE' });
+                if (!response.ok) throw new Error('Failed to remove item.');
+                alert('Item removed successfully.');
+                location.reload();
+            } catch (err) {
+                console.error('Error removing item:', err);
+            }
+        }
+    </script>
+</body>
+</html>

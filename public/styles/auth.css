@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #5cdb95, #379683);
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.auth-box {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 18px;
+    border-bottom: 2px solid transparent;
+    color: #05386b;
+    font-weight: 600;
+}
+
+.tab.active {
+    border-color: #5cdb95;
+    color: #5cdb95;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.auth-btn {
+    background: #5cdb95;
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.auth-btn:hover {
+    background: #379683;
+}
+
+.hidden {
+    display: none;
+}
+
+.user-type {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.user-type label {
+    font-size: 14px;
+    cursor: pointer;
+}

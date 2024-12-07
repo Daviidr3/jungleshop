@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopMate - Products</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="ShopMate Logo"></a>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop All</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li id="auth-link"><a href="auth.html">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="products-container" class="product-list"></section>
+
+    <footer class="footer">
+        <p>&copy; 2024 ShopMate. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            const categoryId = urlParams.get('category-id'); // Get category ID from the query string
+            // Default to fetch all products
+            let fetchUrl = '/products'; 
+            if (categoryId) {
+                fetchUrl += `?category-id=${categoryId}`; // Fetch products for the specific category
+            }
+
+            try {
+                const response = await fetch(fetchUrl);
+                const products = await response.json();
+                const container = document.getElementById('products-container');
+
+                products.forEach(product => {
+                    const productCard = document.createElement('article');
+                    productCard.classList.add('product-item');
+                    productCard.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p>$${product.price.toFixed(2)}</p>
+                        <a href="details.html?product-id=${product.product_id}" class="cta-btn">View Details</a>
+                    `;
+                    container.appendChild(productCard);
+                });
+            } catch (err) {
+                console.error('Error fetching products:', err);
+                const container = document.getElementById('products-container');
+                container.innerHTML = '<p class="error">Failed to load products. Please try again later.</p>';
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+    const authLink = document.getElementById('auth-link');
+    // Get user details from local storage
+    const user = JSON.parse(localStorage.getItem('user')); 
+
+    if (user) {
+        // Update navigation bar to show the user's name and a sign-out link
+        authLink.innerHTML = `
+            <span>Welcome, ${user.name}</span> 
+            <a href="signout.html" id="signout-link">Sign Out</a>
+        `;
+    }
+});
+
+    </script>
+</body>
+</html>

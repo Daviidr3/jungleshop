@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopMate - Categories</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="ShopMate Logo"></a>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop All</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li id="auth-link"><a href="auth.html">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="categories-container" class="category-list"></section>
+
+    <footer class="footer">
+        <p>&copy; 2024 ShopMate. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const authLink = document.getElementById('auth-link');
+    const user = JSON.parse(localStorage.getItem('user')); // Get user details from local storage
+
+    if (user) {
+        // Update navigation bar to show the user's name and a sign-out link
+        authLink.innerHTML = `
+            <span>Welcome, ${user.name}</span> 
+            <a href="signout.html" id="signout-link">Sign Out</a>
+        `;
+    }
+});
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/categories'); // Fetch categories from the backend
+                const categories = await response.json();
+                const container = document.getElementById('categories-container');
+
+                categories.forEach(category => {
+                    const categoryCard = document.createElement('article');
+                    categoryCard.classList.add('category-item');
+                    categoryCard.innerHTML = `
+                        <h2>${category.name}</h2>
+                        <a href="products.html?category-id=${category.category_id}" class="cta-btn">View Products</a>
+                    `;
+                    container.appendChild(categoryCard);
+                });
+            } catch (err) {
+                console.error('Error fetching categories:', err);
+                const container = document.getElementById('categories-container');
+                container.innerHTML = '<p class="error">Failed to load categories. Please try again later.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - JungleShop</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="JungleShop Logo"></a>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop All</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li id="auth-link"><a href="auth.html">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="product-details-container">
+        <div id="product-details" class="product-details-box"></div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 JungleShop. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const authLink = document.getElementById('auth-link');
+    const user = JSON.parse(localStorage.getItem('user')); // Get user details from local storage
+
+    if (user) {
+        // Update navigation bar to show the user's name and a sign-out link
+        authLink.innerHTML = `
+            <span>Welcome, ${user.name}</span> 
+            <a href="signout.html" id="signout-link">Sign Out</a>
+        `;
+    }
+});
+
+
+        // Load product details
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('product-id'); // Get product_id from query string
+
+            if (!productId) {
+                console.error('Product ID is missing in the query string');
+                return;
+            }
+
+            try {
+                // Fetch product details from the backend
+                const response = await fetch(`/products/${productId}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch product details: ${response.statusText}`);
+                }
+                const product = await response.json();
+
+                // Dynamically update the product details page
+                const detailsContainer = document.getElementById('product-details');
+                detailsContainer.innerHTML = `
+                    <section class="product-gallery">
+                        <img src="${product.image}" alt="${product.name}">
+                    </section>
+                    <section class="product-info">
+                        <h1>${product.name}</h1>
+                        <p class="price">$${product.price.toFixed(2)}</p>
+                        <p class="description">${product.description}</p>
+                        <ul class="product-specs">
+                            <li><strong>Category:</strong> ${product.category || 'N/A'}</li>
+                            <li><strong>Additional Info:</strong> ${product.additional_info || 'None'}</li>
+                        </ul>
+                        <button class="cta-btn" onclick="addToCart(${product.product_id})">Add to Cart</button>
+                    </section>
+                `;
+            } catch (err) {
+                console.error('Error fetching product details:', err);
+                const detailsContainer = document.getElementById('product-details');
+                detailsContainer.innerHTML = `<p class="error">Unable to load product details. Please try again later.</p>`;
+            }
+        });
+
+        // Add product to cart
+        function addToCart(productId) {
+            const user = JSON.parse(localStorage.getItem('user')); // Get logged-in user
+            if (!user) {
+                alert('Please sign in to add items to your cart.');
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            fetch('/cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user.user_id, product_id: productId, quantity: 1 })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to add product to cart.');
+                return response.json();
+            })
+            .then(result => {
+                alert('Product added to cart!');
+            })
+            .catch(err => {
+                console.error('Error adding to cart:', err.message);
+                alert('Failed to add product to cart.');
+            });
+        }
+    </script>
+</body>
+</html>
