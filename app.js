@@ -50,12 +50,13 @@ app.post('/admin/upload', upload.single('file-upload'), (req, res) => {
             );
         });
 
-        res.status(200).json({
-            message: `${products.length} products uploaded successfully.`,
-        });
+        // Redirect after successful upload
+        res.redirect('/admin-products.html?success=true');
     } catch (err) {
         console.error('Error processing upload:', err.message);
-        res.status(400).json({ error: 'Invalid file format or content.' });
+        res.status(400).send(
+            `<script>alert('Invalid file format or content. Please try again.'); window.location.href = '/admin-upload.html';</script>`
+        );
     }
 });
 

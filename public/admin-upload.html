@@ -24,12 +24,12 @@
 
     <main class="admin-container">
       <form action="/admin/upload" method="post" enctype="multipart/form-data">
-        <label for="file-upload">Upload Product File (JSON):</label>
+        <label for="file-upload">Upload Product File (JSON, .txt):</label>
         <input
           type="file"
           id="file-upload"
           name="file-upload"
-          accept=".json"
+          accept=".json, .txt"
         />
 
         <p>
