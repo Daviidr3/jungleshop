@@ -23,7 +23,9 @@
         </nav>
     </header>
 
-    <section id="categories-container" class="category-list"></section>
+    <main>
+        <section id="categories-container" class="category-list"></section>
+    </main>
 
     <footer class="footer">
         <p>&copy; 2024 ShopMate. All rights reserved.</p>
@@ -31,21 +33,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-    const authLink = document.getElementById('auth-link');
-    const user = JSON.parse(localStorage.getItem('user')); // Get user details from local storage
+            const authLink = document.getElementById('auth-link');
+            const user = JSON.parse(localStorage.getItem('user')); // Get user details from local storage
 
-    if (user) {
-        // Update navigation bar to show the user's name and a sign-out link
-        authLink.innerHTML = `
-            <span>Welcome, ${user.name}</span> 
-            <a href="signout.html" id="signout-link">Sign Out</a>
-        `;
-    }
-});
+            if (user) {
+                // Update navigation bar to show the user's name and a sign-out link
+                authLink.innerHTML = `
+                    <span>Welcome, ${user.name}</span> 
+                    <a href="signout.html" id="signout-link">Sign Out</a>
+                `;
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const response = await fetch('/categories'); // Fetch categories from the backend
+                if (!response.ok) throw new Error('Failed to fetch categories');
                 const categories = await response.json();
                 const container = document.getElementById('categories-container');
 
@@ -53,6 +56,7 @@
                     const categoryCard = document.createElement('article');
                     categoryCard.classList.add('category-item');
                     categoryCard.innerHTML = `
+                        <img src="/images/cat${category.category_id}.jpg" alt="${category.name}" class="category-image" />
                         <h2>${category.name}</h2>
                         <a href="products.html?category-id=${category.category_id}" class="cta-btn">View Products</a>
                     `;
